@@ -6,22 +6,35 @@ class TestOstoskori(unittest.TestCase):
     def setUp(self):
         self.kori = Ostoskori()
 
+    # step 1
     def test_ostoskorin_hinta_ja_tavaroiden_maara_alussa(self):
         self.assertEqual(self.kori.hinta(), 0)
         self.assertEqual(self.kori.tavaroita_korissa(), 0)
 
+    # step 2
     def test_yhden_tuotteen_lisaamisen_jalkeen_korissa_yksi_tavara(self):
         maito = Tuote("Maito", 3)
         self.kori.lisaa_tuote(maito)
 
         self.assertEqual(self.kori.tavaroita_korissa(), 1)
 
+    # step 3
     def test_yhden_tuotteen_lisaamisen_jalkeen_ostoskorin_hinta_on_sama_kuin_tuotteen_hinta(self):
         maito = Tuote("Maito", 3)
         self.kori.lisaa_tuote(maito)
 
         self.assertEqual(self.kori.hinta(), maito.hinta())
 
+    # step 4
+    def test_kahden_saman_tuotteen_lisaamisen_jalkeen_ostoskorissa_on_2_tavaraa(self):
+        maito = Tuote("Maito", 3)
+
+        self.kori.lisaa_tuote(maito)
+        self.kori.lisaa_tuote(maito)
+
+        self.assertEqual(self.kori.tavaroita_korissa(), 2)
+
+    # step 5
     def test_kahden_eri_tuotteen_lisaamisen_jalkeen_ostoskorin_hinta_on_sama_kuin_tuotteiden_hintojen_summa(self):
         maito = Tuote("Maito", 3)
         mehu = Tuote("Mehu", 5)
@@ -31,6 +44,7 @@ class TestOstoskori(unittest.TestCase):
 
         self.assertEqual(self.kori.hinta(), maito.hinta() + mehu.hinta())
     
+    # step 6
     def test_kahden_saman_tuotteen_lisaamisen_jalkeen_ostoskorissa_on_2_tavaraa(self):
         maito = Tuote("Maito", 3)
 
@@ -39,6 +53,7 @@ class TestOstoskori(unittest.TestCase):
 
         self.assertEqual(self.kori.tavaroita_korissa(), 2)
 
+    # step 7
     def test_kahden_saman_tuotteen_lisaamisen_jalkeen_hinta_on_sama_kuin_2_kertaa_tuotteen_hinta(self):
         maito = Tuote("Maito", 3)
 
@@ -47,6 +62,7 @@ class TestOstoskori(unittest.TestCase):
 
         self.assertEqual(self.kori.hinta(), 2 * maito.hinta())
 
+    # step 8
     def test_yhden_tuotteen_lisaamisen_jalkeen_korissa_yksi_ostosolio(self):
         maito = Tuote("Maito", 3)
         self.kori.lisaa_tuote(maito)
@@ -55,6 +71,7 @@ class TestOstoskori(unittest.TestCase):
  
         self.assertEqual(len(ostokset), 1)
 
+    # step 9
     def test_yhden_tuotteen_lisaamisen_jalkeen_korissa_yksi_ostosolio_jolla_oikea_tuotteen_nimi_ja_maara(self):
         maito = Tuote("Maito", 3)
         self.kori.lisaa_tuote(maito)
@@ -64,6 +81,7 @@ class TestOstoskori(unittest.TestCase):
         self.assertEqual(ostos.hinta(), 3)
         self.assertEqual(ostos.tuotteen_nimi(), "Maito")
 
+    # step 10
     def test_kahden_eri_tuotteen_lisaamisen_jalkeen_ostokori_sisaltaa_kaksi_eri_ostosta(self):
         maito = Tuote("Maito", 3)
         mehu = Tuote("Mehu", 5)
@@ -75,6 +93,7 @@ class TestOstoskori(unittest.TestCase):
 
         self.assertEqual(len(ostokset), 2)
 
+    # step 11
     def test_kahden_saman_tuotteen_lisaamisen_jalkeen_ostoskori_sisaltaa_vain_yhden_ostoksen(self):
         maito = Tuote("Maito", 3)
 
@@ -84,3 +103,15 @@ class TestOstoskori(unittest.TestCase):
         ostokset = self.kori.ostokset()
 
         self.assertEqual(len(ostokset), 1)
+
+    #step 12
+    def test_kahden_saman_tuotteen_lisaamisen_jalkeen_ostoskori_sisaltaa_ostoksen_jolla_sama_nimi_kuin_tuotteella_ja_lukumäärä_2(self):
+        maito = Tuote("Maito", 3)
+
+        self.kori.lisaa_tuote(maito)
+        self.kori.lisaa_tuote(maito)
+
+        ostos = self.kori.ostokset()[0]
+
+        self.assertEqual(ostos.tuotteen_nimi(), "Maito")
+        self.assertEqual(ostos.lukumaara(), 2)
