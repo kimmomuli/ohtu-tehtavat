@@ -7,7 +7,7 @@ class Ostoskori:
         # ostoskori tallettaa Ostos-oliota, yhden per korissa oleva Tuote
 
     def tavaroita_korissa(self):
-        return len(self.ostoskori)
+        return sum([ostos.lukumaara() for ostos in self.ostoskori])
         # kertoo korissa olevien tavaroiden lukumäärän
         # eli jos koriin lisätty 2 kpl tuotetta "maito", tulee metodin palauttaa 2 
         # samoin jos korissa on 1 kpl tuotetta "maito" ja 1 kpl tuotetta "juusto", tulee metodin palauttaa 2 
@@ -17,7 +17,12 @@ class Ostoskori:
         # kertoo korissa olevien ostosten yhteenlasketun hinnan
 
     def lisaa_tuote(self, lisattava: Tuote):
-        self.ostoskori.append(Ostos(lisattava))
+        if lisattava.nimi() in [ostos.tuotteen_nimi() for ostos in self.ostoskori]:
+            for ostos in self.ostoskori:
+                if ostos.tuotteen_nimi() == lisattava.nimi():
+                    ostos.muuta_lukumaaraa(1)
+        else:
+            self.ostoskori.append(Ostos(lisattava))
 
     def poista_tuote(self, poistettava: Tuote):
         # poistaa tuotteen
